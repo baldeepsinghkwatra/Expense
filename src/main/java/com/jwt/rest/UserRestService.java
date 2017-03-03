@@ -14,26 +14,13 @@
  * or reproduction of this material is strictly forbidden unless prior written
  * permission is obtained from Mindfire Solutions
  */
-package com.jwt.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+package com.jwt.rest;
 
 /**
  *
- * @author baldeep
+ * @author baldeepsinghkwatra
  */
-@Controller
-public class IndexController {
+public class UserRestService {
 
-    
-    @GetMapping("index")
-    public String index() {
-        return "/index";
-    }
-    
-     @GetMapping("register")
-    public String register() {
-        return "/register";
-    }
 }

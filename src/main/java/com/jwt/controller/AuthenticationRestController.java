@@ -21,6 +21,7 @@ import com.jwt.security.JwtUser;
 import com.jwt.security.service.JwtAuthenticationResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 public class AuthenticationRestController {
@@ -36,10 +37,13 @@ public class AuthenticationRestController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "auth", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-        System.out.println(">>>>>>"+authenticationRequest+tokenHeader);
+        try{System.out.println(">>>>>>"+authenticationRequest+tokenHeader+passwordEncoder.encode(authenticationRequest.getPassword()));
 //         Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -50,11 +54,13 @@ public class AuthenticationRestController {
 
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        System.out.println("com.jwt.controller.AuthenticationRestController.createAuthenticationToken()"+userDetails);
+        System.out.println("com.jwt.controller.AuthenticationRestController.createAuthenticationToken()"+userDetails+passwordEncoder.encode(authenticationRequest.getPassword()));
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
         // Return the token
+        
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        }catch(Exception e){e.printStackTrace();return ResponseEntity.ok(new String());}
     }
 
     @RequestMapping(value = "${jwt.authentication.refresh}", method = RequestMethod.GET)
