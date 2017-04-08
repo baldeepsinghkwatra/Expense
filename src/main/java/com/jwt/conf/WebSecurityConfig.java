@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+       
         httpSecurity
                 // we don't need CSRF because our token is invulnerable
                 .csrf().disable()
@@ -57,22 +58,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                .antMatchers("/app/**").access("hasRole('ROLE_USER')");
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                // allow anonymous resource requests
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/*",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                ).permitAll()
-                
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/index").permitAll()
-                .anyRequest().authenticated();
+//                // allow anonymous resource requests
+//                .antMatchers(
+//                        HttpMethod.GET,
+//                        "/*",
+//                        "/*.html",
+//                        "/favicon.ico",
+//                        "/**/*.html",
+//                        "/**/*.css",
+//                        "/**/*.js"
+//                ).permitAll()
+//                
+//                .antMatchers("/auth/**").permitAll()
+//                .antMatchers("/index").permitAll()
+//                .antMatchers("/register").permitAll()
+//                .anyRequest().authenticated();
 
         // Custom JWT based security filter
         httpSecurity

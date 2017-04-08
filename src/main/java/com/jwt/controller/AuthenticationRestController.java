@@ -43,7 +43,7 @@ public class AuthenticationRestController {
 
     @RequestMapping(value = "auth", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-        try{System.out.println(">>>>>>"+authenticationRequest+tokenHeader+passwordEncoder.encode(authenticationRequest.getPassword()));
+        try{
 //         Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

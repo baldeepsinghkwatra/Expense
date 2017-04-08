@@ -23,11 +23,17 @@ package com.jwt.security.dao;
 import java.io.Serializable;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -66,7 +72,7 @@ public abstract class AbstractDAOImpl<PK extends Serializable, T> {
         getSession().update(entity);
     }
 
-    protected Criteria createEntityCriteria() {
+    public Criteria createEntityCriteria() {
         return getSession().createCriteria(classType);
     }
 
@@ -77,6 +83,67 @@ public abstract class AbstractDAOImpl<PK extends Serializable, T> {
     public Long count() {
         return (Long) getSession().createCriteria(classType)
                 .setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    public List<T> findByField(String fieldName, Object fieldValue) {
+        return getSession().createCriteria(classType).add(Restrictions.eq(fieldName, fieldValue)).list();
+    }
+
+    public T findByUniqueField(String fieldName, Object fieldValue) {
+        return (T) getSession().createCriteria(classType).add(Restrictions.eq(fieldName, fieldValue)).uniqueResult();
+    }
+
+    public List<T> findByFields(HashMap<String, Object> hmap) {
+        Set set = hmap.entrySet();
+        Iterator iterator = set.iterator();
+        Criteria criteria = createEntityCriteria();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            criteria.add(Restrictions.eq(mentry.getKey().toString(), mentry.getValue()));
+        }
+        return criteria.list();
+    }
+
+    public T findByUniqueFields(HashMap<String, Object> hmap) {
+        Set set = hmap.entrySet();
+        Iterator iterator = set.iterator();
+        Criteria criteria = createEntityCriteria();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            criteria.add(Restrictions.eq(mentry.getKey().toString(), mentry.getValue()));
+        }
+        return (T) criteria.uniqueResult();
+    }
+
+    public Long countByCriteria(HashMap<String, Object> hmap) {
+        Set set = hmap.entrySet();
+        Iterator iterator = set.iterator();
+        Criteria criteria = createEntityCriteria();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            criteria.add(Restrictions.eq(mentry.getKey().toString(), mentry.getValue()));
+        }
+        criteria.setProjection(Projections.rowCount());
+        return (Long) criteria.uniqueResult();
+    }
+
+    public List<T> findByField(HashMap<String, Object> hmap, String orderByfieldName, String orderType) {
+        Set set = hmap.entrySet();
+        Iterator iterator = set.iterator();
+        Criteria criteria = createEntityCriteria();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            criteria.add(Restrictions.eq(mentry.getKey().toString(), mentry.getValue()));
+        }
+        switch (orderType.toLowerCase()) {
+            case "asc":
+                return criteria.addOrder(Order.asc(orderByfieldName)).list();
+            case "desc":
+                return criteria.addOrder(Order.desc(orderByfieldName)).list();
+            default:
+                return criteria.list();
+        }
+
     }
 
 }
