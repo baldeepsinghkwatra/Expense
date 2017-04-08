@@ -38,6 +38,11 @@ public class IndexController {
         return "/register";
     }
     
+    @GetMapping("addexpense")
+    public String addexpense() {
+        return "/addexpense";
+    }
+    
     @GetMapping("homepage")
     public String homepage() {
         return "/homepage";
