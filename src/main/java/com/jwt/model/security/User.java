@@ -1,5 +1,6 @@
 package com.jwt.model.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,7 @@ public class User {
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    @JsonIgnore
     private List<Authority> authorities;
 
     public Long getId() {

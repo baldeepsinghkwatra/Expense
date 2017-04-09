@@ -16,8 +16,6 @@
  */
 package com.jwt.controller;
 
-import java.security.Principal;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class IndexController {
 
     @GetMapping("index")
-    public String index() {
-        return "/index";
+    public String defaultPage() {
+        return "/register";
     }
 
     @GetMapping("register")
@@ -39,16 +37,16 @@ public class IndexController {
         return "/register";
     }
 
-    @GetMapping("add-expense")
+    @GetMapping("/app/add-expense")
     public String addexpense() {
         return "/addexpense";
     }
 
-    @GetMapping("homepage")
+    @GetMapping("/app/homepage")
     public String homepage() {
-       
-            return "/homepage";
-       
+
+        return "/home";
+
     }
 
     @PostMapping("login-submit")

@@ -54,6 +54,7 @@ public class UserRestController {
             Authority authority=new Authority();
             List<User> users=new ArrayList<>();
             users.add(user);
+            user.setUsername(user.getEmail());
             authority.setUsers(users);
             authority.setId(1L);
             List<Authority> authorities=new ArrayList<>();
