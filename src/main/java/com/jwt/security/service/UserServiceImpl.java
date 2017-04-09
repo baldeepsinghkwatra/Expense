@@ -17,13 +17,8 @@
 package com.jwt.security.service;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.model.security.User;
 import com.jwt.security.dao.UserDAO;
-import java.util.HashMap;
-import java.util.List;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

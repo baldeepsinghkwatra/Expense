@@ -44,14 +44,14 @@ public class IndexController {
         return "/addexpense";
     }
 
-    @GetMapping("/app/homepage")
+    @GetMapping("homepage")
     public String homepage() {
        
             return "/homepage";
        
     }
 
-    @PostMapping("login")
+    @PostMapping("login-submit")
     public String login(String email, String password) {
         //check for valid user.
 
